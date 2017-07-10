@@ -1,0 +1,16 @@
+#loadedData{
+    width: 800px;
+    margin: auto;
+    background-color: deepskyblue;
+}
+#loadedData p{
+    padding:50px;
+    background-color:red
+}
+#newData{
+    height: 400px;
+    width: 800px;
+    margin: auto;
+    background-color: coral;
+    margin-bottom: 20px;
+}

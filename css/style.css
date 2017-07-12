@@ -1,15 +1,13 @@
 
 #loadedData{
     width: 800px;
-    background-color: deepskyblue;
 }
-
 #newData{
     height: 400px;
     width: 800px;
     margin: auto;
     background-color: coral;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 .item{
     background-color: bisque;

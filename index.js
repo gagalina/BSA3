@@ -70,21 +70,19 @@
     var mainContainer = document.getElementById("loadedData");
     mainContainer.innerHTML = "";
     data.map(function (el) {
+
+      var textImgEl = document.createElement("img");
+      textImgEl.classList.add('item_image');
       var item = document.createElement("div");
       item.classList.add('item');
-
-
-      var textTitleEl = document.createElement("p");
+      var textTitleEl = document.createElement("h2");
       textTitleEl.classList.add('item_title');
       var textDescriptionEl = document.createElement("p");
       textDescriptionEl.classList.add('item_description');
-      var textImgEl = document.createElement("img");
-      textImgEl.classList.add('item_image');
-      var textDateEl = document.createElement("p");
+      var textDateEl = document.createElement("time");
       textDateEl.classList.add('item_date');
       var textTagsEl = document.createElement("p");
       textTagsEl.classList.add('item_tags');
-
       var textButtonEl = document.createElement("button");
       textButtonEl.classList.add('item_delete_btn');
       textButtonEl.setAttribute("data-title", el.title);
@@ -93,20 +91,22 @@
 
       textTitleEl.textContent = el.title;
       textDescriptionEl.textContent = el.description;
-      textImgEl.textContent = el.image;
-      textDateEl.textContent = el.createdAt;
+      textImgEl.src = el.image;
+      textImgEl.style.float = "left";
+      textImgEl.style.marginRight = "10px";
+      textDateEl.textContent = formatDate(el.createdAt);
       textTagsEl.textContent = el.tags.join('/');
       textButtonEl.textContent = "DELETE";
 
-
+      item.appendChild(textImgEl);
       item.appendChild(textTitleEl);
       item.appendChild(textDescriptionEl);
-      item.appendChild(textImgEl);
       item.appendChild(textDateEl);
       item.appendChild(textTagsEl);
       item.appendChild(textButtonEl);
 
       mainContainer.appendChild(item);
+
     });
 
   }
@@ -135,7 +135,6 @@
   }
 
   function onSearch(e){
-    console.log(e.target.value);
     searchQuery = e.target.value;
     renderedData =  filterByTitle(allData).slice(0,10);
     renderHtml(renderedData);
@@ -147,6 +146,19 @@
     return data.filter(function (el) {
       return el.title.includes(searchQuery);
     });
+
+  }
+
+  function highlight(text)
+  {
+    inputText = document.getElementById("inputText");
+    var innerHTML = inputText.innerHTML;
+    var index = innerHTML.indexOf(text);
+    if ( index >= 0 )
+    {
+      innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+      inputText.innerHTML = innerHTML
+    }
 
   }
 
@@ -194,24 +206,25 @@
     else {
       return (aIsIn < bIsIn) ? 1 : -1;
     }
-
-
   }
+
+  function formatDate(date) {
+    var monthNames = [
+      "January", "February", "March",
+      "April", "May", "June", "July",
+      "August", "September", "October",
+      "November", "December"
+    ];
+    var createdAt = new Date(date);
+    var day = createdAt.getDate();
+    var monthIndex = createdAt.getMonth();
+    var year = createdAt.getFullYear();
+    var n = createdAt.toLocaleTimeString();
+
+    return monthNames[monthIndex] + ' ' + day + ', ' + year + ', ' + n;
+  }
+
+
 }());
 
 
-// function formatDate(date) {
-//   var monthNames = [
-//     "January", "February", "March",
-//     "April", "May", "June", "July",
-//     "August", "September", "October",
-//     "November", "December"
-//   ];
-//   var createdAt = new Date(date.createdAt);
-//   var day = createdAt.getDate();
-//   var monthIndex = createdAt.getMonth();
-//   var year = createdAt.getFullYear();
-//   var n = createdAt.toLocaleTimeString();
-//
-//   return monthNames[monthIndex] + ' ' + day + ', ' + year + ', ' + n;
-// }

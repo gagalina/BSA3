@@ -6,7 +6,8 @@
   var searchQuery = '';
   var tagSelect = document.getElementById("tagSelect");
 
-  document.getElementById("search").addEventListener('keyup',onSearch);
+  document.getElementById("search").addEventListener('input',onSearch);
+  //keyup
 
   tagSelect.addEventListener('change', onSelectChange);
   var from = 0;
@@ -89,7 +90,8 @@
       textButtonEl.addEventListener('click', deleteItem);
 
 
-      textTitleEl.textContent = el.title;
+      textTitleEl.innerHTML = el.title;
+
       textDescriptionEl.textContent = el.description;
       textImgEl.src = el.image;
       textImgEl.style.float = "left";
@@ -106,6 +108,7 @@
       item.appendChild(textButtonEl);
 
       mainContainer.appendChild(item);
+
 
     });
 
@@ -144,23 +147,30 @@
   function filterByTitle(data) {
 
     return data.filter(function (el) {
-      return el.title.includes(searchQuery);
+      if(el.title.includes(searchQuery)){
+        //highlight(searchQuery, el);
+        return true;
+      }
+      return false;
     });
 
   }
 
-  function highlight(text)
+  //Currentlu for 1 letter
+  function highlight(text, element)
   {
-    inputText = document.getElementById("inputText");
-    var innerHTML = inputText.innerHTML;
+    var inputText = element;
+    var innerHTML = inputText.title;
     var index = innerHTML.indexOf(text);
     if ( index >= 0 )
     {
-      innerHTML = innerHTML.substring(0,index) + "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
-      inputText.innerHTML = innerHTML
+      console.log(innerHTML);
+      //innerHTML = innerHTML.substring(0,index)+ "<span class='highlight'>" + innerHTML.substring(index,index+text.length) + "</span>" + innerHTML.substring(index + text.length);
+      inputText.title = innerHTML;
     }
 
   }
+
 
   function compareByDate(a, b) {
     a = new Date(a.createdAt);
@@ -188,8 +198,8 @@
 
   function categoryChecker(data) {
     return sortTag.some(function (v) {
-      return data.includes(v)
-    });
+    return data.includes(v)
+  });
   }
 
   function mainSortByTag(a, b) {
